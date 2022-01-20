@@ -18,7 +18,7 @@ def run(logger, filename, n_hours, domain, auth):
     for i in range(n_hours): # (4380 HOURS IN HALF A YEAR)
       st0, st1, xdst0, xtst0, xtst1 = get_formatted_datetimes(i)
 
-      lst = get_ticket_count(domain, auth, st0, st1)
+      lst = get_tickets(domain, auth, st0, st1)
       lst = json.loads(lst.text)
 
       TicketCount.at[str(xdst0), int(xtst0)] = str(lst["count"])
