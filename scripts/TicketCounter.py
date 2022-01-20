@@ -45,7 +45,7 @@ def get_formatted_datetimes(t_delta):
 # takes the zendesk account subdomain, and a start and end datetime (%Y-%m-%dT%H:%M:%SZ)
 # returns the result of a GET request to the Zendesk v2 API
 
-def get_ticket_count(dom, auth, st0, st1):
+def get_tickets(dom, auth, st0, st1):
   print(b64encode(auth.encode('utf-8'))[2:-1])
   header = {"Authorization": "Basic {}".format(str(b64encode(auth.encode('utf-8')))[2:-1])}
   url = f"https://{dom}.zendesk.com/api/v2/search.json?query=type:ticket+created>{st0}+created<{st1}"
