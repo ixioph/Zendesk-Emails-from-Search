@@ -1,5 +1,5 @@
 [default]
-SpikeDB = "../out/thePathToYourDatabase.csv"
+EmailList = "../out/thePathToYourDatabase.csv"
 
 [zendesk]
 Domain = "yourZendeskDomain"
@@ -10,5 +10,5 @@ Sender = "theSendingEmail@yourbiz.com"
 Password = "yourSendingEmailPassword"
 Recipient = "theRecipientEmail@theirbiz.com"
 
-[misc]
-OmittedTags = ["list", "of", "tags", "to", "omit"]
+[mods]
+SearchTags = ["list", "of", "tags", "to", "omit"]

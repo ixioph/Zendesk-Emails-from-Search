@@ -5,28 +5,25 @@
 # is extracted and appended to a spreadsheet
 
 import configparser
-import pandas as pd
 import logging
 import smtplib
-import json
 import os
 import TicketCounter as TC
 
 
 config = configparser.RawConfigParser()
 config.read('../src/auth.ini')
-OUTPUT_FILE = config['default']['SpikeDB'].strip('"')
+OUTPUT_FILE = config['default']['EmailList'].strip('"')
 DOMAIN = config['zendesk']['Domain'].strip('"')
 AUTH = config['zendesk']['Credentials'].strip('"')
 SENDER = config['email']['Sender'].strip('"')
 PASS = config['email']['Password'].strip('"')
 RECIPIENT = config['email']['Recipient'].strip('"')
+TAGS = config['mods']['SearchTags']
 
 def main(logger):
 
-    # load up the database for reading and writing to
-    # check if output file exists and create it if it doesn't
-    logger.warning('Loading Database...')
+    # Initialize an empty list to hold the emails
     EmailList = []
 
     logger.warning('Checking if Output File exists...')
@@ -42,9 +39,9 @@ def main(logger):
 
    
     # need tag(s), start & end time (defaults past hour)
-    TicketResults = TC.get_tickets(DOMAIN, AUTH, st0, st1)
+    TicketResults = TC.get_tickets(DOMAIN, AUTH, TAGS)
     for ticket in TicketResults['results']:
-        EmailList.append(ticket[0])
+        EmailList.append(ticket['via']['source']['from']['address'])
     try:
         # save email list to csv
         pass 
