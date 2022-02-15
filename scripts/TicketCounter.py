@@ -1,5 +1,3 @@
-# TicketCounter.py
-
 from datetime import datetime, timedelta
 from base64 import b64encode
 import pandas as pd
@@ -7,28 +5,6 @@ import requests
 import logging
 import json
 
-<<<<<<< Updated upstream
-
-def run(logger, filename, n_hours, domain, auth):
-  columns = list(range(24))
-  TicketCount = pd.DataFrame(columns = columns)
-  TicketCount.to_csv(filename)
-
-  logger.warning('Populating Output File. This is gonna take a while. Go drink some tea.')
-  try:
-    for i in range(n_hours): # (4380 HOURS IN HALF A YEAR)
-      st0, st1, xdst0, xtst0, xtst1 = get_formatted_datetimes(i)
-
-      lst = get_tickets(domain, auth, st0, st1)
-      lst = json.loads(lst.text)
-
-      TicketCount.at[str(xdst0), int(xtst0)] = str(lst["count"])
-    TicketCount.to_csv(filename)
-  except Exception as e:
-    logger.warning('Error populating database: {}'.format(str(e)))
-
-=======
->>>>>>> Stashed changes
 # takes an integer t_delta as an argument
 # returns a set of times, with the start date being current hour - t_delta
 
@@ -54,14 +30,15 @@ def get_tickets(dom, auth, st0, st1, tags):
   url = f"https://{dom}.zendesk.com/api/v2/search.json?query=type:ticket+created>{st0}+created<{st1}+tags:{tags}"
 
   try:
-    r = requests.get(url, headers=header)
+    res = requests.get(url, headers=header)
+    r = json.loads(res.text)
     return r
   except Exception as err: 
     print('Error making zendesk GET request:', str(err))
     exit()
 
-if __name__ =="__main__":
-    # TODO: set logging level based on input
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-    run(logger)
+# if __name__ =="__main__":
+#     # TODO: set logging level based on input
+#     logger = logging.getLogger()
+#     logger.setLevel(logging.INFO)
+#     run(logger)

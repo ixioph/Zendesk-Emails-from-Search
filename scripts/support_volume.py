@@ -1,4 +1,3 @@
-# support_volume.py
 # This script is designed to be run once an hour
 # it searches for the given tags over a specified
 # time period. For each result, the requester email
@@ -26,36 +25,31 @@ def main(logger):
     # Initialize an empty list to hold the emails
     # EmailList = []
 
-    logger.warning('Checking if Output File exists...')
-    if not os.path.exists(OUTPUT_FILE):
-        logger.warning('Output File not found. Creating...')
-        #import in csv as list
-<<<<<<< Updated upstream
-        #EmailList = ...
-=======
-        EmailList = pd.DataFrame
-        print(type(EmailList))
-        EmailList.to_csv(OUTPUT_FILE)
->>>>>>> Stashed changes
-        logger.warning('Output File generated and ready for usage.')
-    else:
-        logger.warning('Output File already exists. Querying new results.')
+    # logger.warning('Checking if Output File exists...')
+    # if not os.path.exists(OUTPUT_FILE):
+    #     logger.warning('Output File not found. Creating...')
+    #     #import in csv as list
+    #     # EmailList = TC.pd.DataFrame()
+    #     # EmailList.to_csv(OUTPUT_FILE)
+    #     logger.warning('Output File generated and ready for usage.')
+    # else:
+    #     logger.warning('Output File already exists. Querying new results.')
 
     st0, st1, xdst0, xtst0, xtst1 = TC.get_formatted_datetimes(1)
    
 
     # need tag(s), start & end time (defaults past hour)
+    EmailList = []
+    EmailList = TC.pd.DataFrame()
     TicketResults = TC.get_tickets(DOMAIN, AUTH, st0, st1, TAGS)
     for ticket in TicketResults['results']:
-        EmailList.append(ticket['via']['source']['from']['address'])
+        EmailList = EmailList.append(TC.pd.Series(ticket['via']['source']['from']), ignore_index=True)
+        print(EmailList.shape)
     try:
         # save email list to csv
-<<<<<<< Updated upstream
-=======
-        lst = TC.get_formatted_datetimes(1)
-        lst = json.loads(lst.text)
+        # lst = TC.get_formatted_datetimes(1)
+        # lst = TC.json.loads(lst.text)
         EmailList.to_csv(OUTPUT_FILE)
->>>>>>> Stashed changes
         pass 
     except Exception as e:
         logger.warning('Error saving file, {}'.format(str(e)))
