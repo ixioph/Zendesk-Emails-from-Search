@@ -19,31 +19,43 @@ AUTH = config['zendesk']['Credentials'].strip('"')
 SENDER = config['email']['Sender'].strip('"')
 PASS = config['email']['Password'].strip('"')
 RECIPIENT = config['email']['Recipient'].strip('"')
-TAGS = config['mods']['SearchTags']
+TAGS = config['mods']['SearchTags'].strip('"')
 
 def main(logger):
 
     # Initialize an empty list to hold the emails
-    EmailList = []
+    # EmailList = []
 
     logger.warning('Checking if Output File exists...')
     if not os.path.exists(OUTPUT_FILE):
         logger.warning('Output File not found. Creating...')
         #import in csv as list
+<<<<<<< Updated upstream
         #EmailList = ...
+=======
+        EmailList = pd.DataFrame
+        print(type(EmailList))
+        EmailList.to_csv(OUTPUT_FILE)
+>>>>>>> Stashed changes
         logger.warning('Output File generated and ready for usage.')
     else:
         logger.warning('Output File already exists. Querying new results.')
 
-    #st0, st1, xdst0, xtst0, xtst1 = TC.get_formatted_datetimes(1)
-
+    st0, st1, xdst0, xtst0, xtst1 = TC.get_formatted_datetimes(1)
    
+
     # need tag(s), start & end time (defaults past hour)
-    TicketResults = TC.get_tickets(DOMAIN, AUTH, TAGS)
+    TicketResults = TC.get_tickets(DOMAIN, AUTH, st0, st1, TAGS)
     for ticket in TicketResults['results']:
         EmailList.append(ticket['via']['source']['from']['address'])
     try:
         # save email list to csv
+<<<<<<< Updated upstream
+=======
+        lst = TC.get_formatted_datetimes(1)
+        lst = json.loads(lst.text)
+        EmailList.to_csv(OUTPUT_FILE)
+>>>>>>> Stashed changes
         pass 
     except Exception as e:
         logger.warning('Error saving file, {}'.format(str(e)))

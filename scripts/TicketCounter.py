@@ -7,6 +7,7 @@ import requests
 import logging
 import json
 
+<<<<<<< Updated upstream
 
 def run(logger, filename, n_hours, domain, auth):
   columns = list(range(24))
@@ -26,6 +27,8 @@ def run(logger, filename, n_hours, domain, auth):
   except Exception as e:
     logger.warning('Error populating database: {}'.format(str(e)))
 
+=======
+>>>>>>> Stashed changes
 # takes an integer t_delta as an argument
 # returns a set of times, with the start date being current hour - t_delta
 
@@ -45,10 +48,10 @@ def get_formatted_datetimes(t_delta):
 # takes the zendesk account subdomain, and a start and end datetime (%Y-%m-%dT%H:%M:%SZ)
 # returns the result of a GET request to the Zendesk v2 API
 
-def get_tickets(dom, auth, st0, st1):
+def get_tickets(dom, auth, st0, st1, tags):
   print(b64encode(auth.encode('utf-8'))[2:-1])
   header = {"Authorization": "Basic {}".format(str(b64encode(auth.encode('utf-8')))[2:-1])}
-  url = f"https://{dom}.zendesk.com/api/v2/search.json?query=type:ticket+created>{st0}+created<{st1}"
+  url = f"https://{dom}.zendesk.com/api/v2/search.json?query=type:ticket+created>{st0}+created<{st1}+tags:{tags}"
 
   try:
     r = requests.get(url, headers=header)
