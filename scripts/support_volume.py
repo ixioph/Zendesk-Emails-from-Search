@@ -32,17 +32,16 @@ def main(logger):
     email_list = []
     TicketResults = get_tickets(DOMAIN, AUTH, st0, st1, TAGS)
     for ticket in TicketResults['results']:
-        reqID_list.append(ticket['requester_id'])
-        #ReqIDList = ReqIDList.astype(int)
-        # print(EmailList.shape)
+        reqID_list.append((ticket['id'], ticket['requester_id']))
+
     try:
         print(reqID_list)
         pass 
     except Exception as e:
         logger.warning('Error saving file, {}'.format(str(e)))
 
-    for rID in reqID_list:
-        email_list.append(get_email_from_requestID(DOMAIN, AUTH, rID))
+    for tID,rID in reqID_list:
+        email_list.append((tID, get_email_from_requestID(DOMAIN, AUTH, rID)))
         
     try:
         print(email_list)
