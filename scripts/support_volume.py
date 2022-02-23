@@ -93,24 +93,6 @@ def get_email_from_requestID(dom, auth, reqid):
     print('Error making zendesk GET request:', str(err))
     exit()
 
-def populator(dom, auth, OUTPUT_FILE, tags):
-    
-  columns = list(range(24))
-  historical_volume = pd.DataFrame(columns = columns)
-  historical_volume.to_csv(OUTPUT_FILE)
-
-  try:
-    for i in range(4): # (4380 HOURS IN HALF A YEAR)
-      st0, st1, xdst0, xtst0 = get_formatted_datetimes(i)
-
-      tickets = get_tickets(dom, auth, st0, st1, tags)
-      print(tickets)
-
-      historical_volume.at[str(xdst0), int(xtst0)] = str(tickets["count"])
-    historical_volume.to_csv(OUTPUT_FILE)
-  except Exception as e:
-    print('Error populating database: {}'.format(str(e)))
-
 
 # takes the recipient email, hourly count, and frequent tags as arguments
 # auth should be a tuple containing the sender email id and sender email id password
@@ -150,10 +132,10 @@ if __name__ =="__main__":
     # TODO: set logging level based on input
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-    try:
-        if os.path.exists(OUTPUT_FILE) == False:
-            populator(DOMAIN, AUTH, OUTPUT_FILE, TAGS)
-    except Exception as e:
-        print("Error populating {}!\n{}".format(OUTPUT_FILE,str(e)))
-        exit()
+    # try:
+    #     if os.path.exists(OUTPUT_FILE) == False:
+    #         populator(DOMAIN, AUTH, OUTPUT_FILE, TAGS)
+    # except Exception as e:
+    #     print("Error populating {}!\n{}".format(OUTPUT_FILE,str(e)))
+    #     exit()
     main(logger)
