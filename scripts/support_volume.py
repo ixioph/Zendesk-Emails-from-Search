@@ -9,7 +9,6 @@ import pandas as pd
 import configparser
 import requests
 import logging
-import smtplib
 import json
 import os
 
@@ -92,38 +91,6 @@ def get_email_from_requestID(dom, auth, reqid):
   except Exception as err: 
     print('Error making zendesk GET request:', str(err))
     exit()
-
-
-# takes the recipient email, hourly count, and frequent tags as arguments
-# auth should be a tuple containing the sender email id and sender email id password
-# builds a message and sends it to the recipient
-
-def send_report(to, tags, xdst0, xtst0, xtst1, emaillist, auth = None, subject='Email List Update!'):
-    try:
-        # creates SMTP session
-        email = smtplib.SMTP('smtp.gmail.com', 587)
-
-        # start TLS for security
-        email.starttls()
-
-        # authentication
-        email.login(auth[0], auth[1])
-
-        # craft the message
-        message = ("Greetings Crunchyroll Humans, \n\n"
-                    "On {}, between {} and {}, for the tag {}, "
-                    "the following emails were gathered:\n {}.\n\n").format(xdst0, xtst0, xtst1, tags, emaillist)
-        message = 'Subject: {}\n\n{}'.format(subject, message).encode('utf-8')
-
-        # send the email
-        email.sendmail(auth[0], to, message)
-
-        # terminate the session
-        email.quit()
-    except Exception as e:
-        print('ERROR: ', str(e))
-        exit()
-    return 0
 
 
 
